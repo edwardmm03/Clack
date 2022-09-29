@@ -50,5 +50,5 @@ public abstract class ClackData
         return date;
     }
 
-    public abstract ClackData getData();
+    public abstract String getData();
 }
