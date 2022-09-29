@@ -1,4 +1,4 @@
-public class FileClackData
+public class FileClackData extends ClackData
 {
 
 }

@@ -1,4 +1,4 @@
-public class MessageClackData
+public class MessageClackData extends ClackData
 {
 
 }
