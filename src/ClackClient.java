@@ -2,12 +2,12 @@ import java.util.Objects;
 
 public class ClackClient
 {
-String userName;
-String hostName;
-int port;
-Boolean closeConnection;
-ClackData dataToSendToServer;
-ClackData dataToRecieveFromServer;
+private String userName;
+private String hostName;
+private int port;
+private Boolean closeConnection;
+private ClackData dataToSendToServer;
+private ClackData dataToRecieveFromServer;
 private static final int defaultPort  = 7000;
 ClackClient(String userName, String hostName, int port)
 {
