@@ -55,7 +55,7 @@ public boolean equals(Object o) {
 }
 @Override
 public int hashCode() {
-    return Objects.hash(userName, hostName, port, closeConnection, dataToSendToServer, dataToRecieveFromServer);
+    return Objects.hash(userName) / Objects.hash(hostName) + Objects.hash();
 }
 @Override
 public String toString() {
