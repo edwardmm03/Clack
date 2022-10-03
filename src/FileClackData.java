@@ -57,14 +57,15 @@ public class FileClackData extends ClackData
         return f1==f2;
     }
 
+    //returns a string describing the object
     public String toString()
     {
         return "This class is a subclass for the ClackData class and creates objects" +
                 "for files sent in clack. " +
-                "File name currently is: " + fileName+
-                "File contents are: " + fileContents+
-                "Username is: " + getUsername() +
-                "The type is: " + getType() +
+                "File name currently is: " + fileName+ " " +
+                "File contents are: " + fileContents+ " " +
+                "Username is: " + getUsername() + " " +
+                "The type is: " + getType() + " " +
                 "The date is: " + getDate();
     }
 }
