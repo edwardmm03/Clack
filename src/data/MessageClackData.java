@@ -1,3 +1,5 @@
+package data;
+
 public class MessageClackData extends ClackData
 {
     //private variables
@@ -36,7 +38,7 @@ public class MessageClackData extends ClackData
     //returns a string describing the object
     public String toString()
     {
-        return "This class is a subclass for the ClackData class and creates objects" +
+        return "This class is a subclass for the data.ClackData class and creates objects" +
                 "for messages sent in clack. " +
                 "Message currently is: " + message + " " +
                 "Username is: " + getUsername() + " " +
