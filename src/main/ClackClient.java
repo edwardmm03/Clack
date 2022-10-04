@@ -1,3 +1,7 @@
+package main;
+
+import data.ClackData;
+
 import java.util.Objects;
 
 public class ClackClient
@@ -9,7 +13,7 @@ private Boolean closeConnection;
 private ClackData dataToSendToServer;
 private ClackData dataToRecieveFromServer;
 private static final int defaultPort  = 7000;
-ClackClient(String userName, String hostName, int port)
+public ClackClient(String userName, String hostName, int port)
 {
     this.userName = userName;
     this.hostName = hostName;
@@ -17,15 +21,15 @@ ClackClient(String userName, String hostName, int port)
     dataToSendToServer = null;
     dataToRecieveFromServer = null;
 }
-ClackClient(String userName, String hostName)
+public ClackClient(String userName, String hostName)
 {
     this(userName, hostName, defaultPort);
 }
-ClackClient(String userName)
+public ClackClient(String userName)
 {
     this(userName, "localhost");
 }
-ClackClient()
+public ClackClient()
 {
     this("Anon");
 }
@@ -55,11 +59,11 @@ public boolean equals(Object o) {
 }
 @Override
 public int hashCode() {
-    return Objects.hash(userName) / Objects.hash(hostName) + Objects.hash();
+    return Objects.hash(userName) / Objects.hash(hostName) + Objects.hash(port);
 }
 @Override
 public String toString() {
-    return "ClackClient{" +
+    return "main.ClackClient{" +
             "userName='" + userName + '\'' +
             ", hostName='" + hostName + '\'' +
             ", port=" + port +

@@ -1,3 +1,7 @@
+package main;
+
+import data.ClackData;
+
 import java.util.Objects;
 
 public class ClackServer {
@@ -7,13 +11,13 @@ public class ClackServer {
     private ClackData dataToSendToClient;
     private static final int defaultPort = 7000;
 
-    ClackServer(int port)
+    public ClackServer(int port)
     {
         this.port = port;
         this.dataToRecieveFromClient = null;
         this.dataToSendToClient = null;
     }
-    ClackServer()
+    public ClackServer()
     {
         this(defaultPort);
     }
@@ -37,7 +41,7 @@ public class ClackServer {
     }
     @Override
     public String toString() {
-        return "ClackServer{" +
+        return "main.ClackServer{" +
                 "port=" + port +
                 ", closeConnection=" + closeConnection +
                 ", dataToRecieveFromClient=" + dataToRecieveFromClient +

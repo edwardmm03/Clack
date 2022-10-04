@@ -1,3 +1,5 @@
+package data;
+
 public class FileClackData extends ClackData
 {
     //private variables
@@ -60,7 +62,7 @@ public class FileClackData extends ClackData
     //returns a string describing the object
     public String toString()
     {
-        return "This class is a subclass for the ClackData class and creates objects" +
+        return "This class is a subclass for the data.ClackData class and creates objects" +
                 "for files sent in clack. " +
                 "File name currently is: " + fileName+ " " +
                 "File contents are: " + fileContents+ " " +
