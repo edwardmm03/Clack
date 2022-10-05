@@ -9,14 +9,14 @@ public class TestClackServer
         ClackServer test2 = new ClackServer();
 
         //getPort
-        test1.getPort();
-        test2.getPort();
+        System.out.println(test1.getPort());
+        System.out.println(test2.getPort());
         //equals
-        test1.equals(test2);
-        test1.equals(test1c);
+        System.out.println(test1.equals(test2));
+        System.out.println(test1.equals(test1c));
         //hashCode
-        test2.hashCode();
+        System.out.println(test2.hashCode());
         //toString
-        test1.toString();
+        System.out.print(test1.toString());
     }
 }
