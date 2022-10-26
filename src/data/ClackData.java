@@ -9,10 +9,10 @@ public abstract class ClackData
     private Date date;
 
     //public constants
-    final int CONSTANT_LISTUSERS =0;
-    final int CONSTANT_LOGOUT =1;
-    final int CONSTANT_SENDMESSAGE=2;
-    final int CONSTANT_SENDFILE =3;
+    final static int CONSTANT_LISTUSERS =0;
+    final static int CONSTANT_LOGOUT =1;
+    final static int CONSTANT_SENDMESSAGE=2;
+    final static int CONSTANT_SENDFILE =3;
 
     //constructor for username and type
     public ClackData(String u, int t)

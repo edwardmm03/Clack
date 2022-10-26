@@ -24,7 +24,6 @@ public class ClackServer {
     void start(){}
     void recieveData(){}
     void sendData(){}
-    void getData(){}
     public int getPort() {
         return port;
     }

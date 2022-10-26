@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Objects;
+
 public class FileClackData extends ClackData
 {
     //private variables
@@ -50,13 +52,13 @@ public class FileClackData extends ClackData
     //overrides hash code
     public int hashCode()
     {
-        return 0x200;
+        return Objects.hash(fileName) + Objects.hash(fileContents);
     }
 
     //overrides equals
-    public boolean equals (String f1, String f2)
+    public boolean equals (FileClackData f)
     {
-        return f1==f2;
+        return (this.fileName == f.fileName) && (this.fileContents == f.fileContents);
     }
 
     //returns a string describing the object

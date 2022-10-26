@@ -5,18 +5,21 @@ public class TestClackData
 {
     public static void main (String args [])
     {
+
         //testing data.MessageClackData class methods
         ClackData message1 = new MessageClackData("Megan","Hi", 0);
         ClackData message2 = new MessageClackData();
         ClackData message3 = new MessageClackData("Kell", ":)", -1);
 
         System.out.println("Message 1 says: " + message1.getData());
-        System.out.println(message2);
+        System.out.println(message1.getType());
 
-        System.out.println(message1==message2);
+        System.out.println(message2);
+        System.out.println(message2.getDate());
+
+        System.out.println(message1.equals(message2));
 
         System.out.println(message3);
-
         System.out.println(message3.hashCode());
 
         //testing data.FileClackData
@@ -30,8 +33,11 @@ public class TestClackData
         file1.getFileName();
         System.out.println("The first file's name is: " + file1.getFileName());
 
-        System.out.println(file2 == file3);
+        System.out.println(file2.equals(file3));
         System.out.println(file1.hashCode());
         System.out.print(file2.hashCode());
+
+        System.out.println(file1.getType());
+        System.out.println(file1.getDate());
     }
 }

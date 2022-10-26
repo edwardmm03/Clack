@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Objects;
+
 public class MessageClackData extends ClackData
 {
     //private variables
@@ -26,13 +28,13 @@ public class MessageClackData extends ClackData
     //overrides the hashcode
     public int hashCode()
     {
-        return 0x100;
+        return Objects.hash(message) ;
     }
 
     //overrides the equals method
-    public boolean equals (String m1, String m2)
+    public boolean equals (MessageClackData m)
     {
-        return m1 == m2;
+        return this.message == m.message;
     }
 
     //returns a string describing the object
