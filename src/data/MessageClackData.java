@@ -20,6 +20,12 @@ public class MessageClackData extends ClackData
         this("Anon", " ", 0);
     }
 
+    public MessageClackData(String u, String m, String k, int t)
+    {
+        super(u,t);
+        message= encrypt(m,k);
+    }
+
     public String getData()
     {
         return message;

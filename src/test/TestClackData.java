@@ -10,6 +10,7 @@ public class TestClackData
         ClackData message1 = new MessageClackData("Megan","Hi", 0);
         ClackData message2 = new MessageClackData();
         ClackData message3 = new MessageClackData("Kell", ":)", -1);
+        //ClackData message4 = new MessageClackData("Megan", "BRAVENEWWORLD", "TIME",0);
 
         System.out.println("Message 1 says: " + message1.getData());
         System.out.println(message1.getType());
@@ -22,10 +23,13 @@ public class TestClackData
         System.out.println(message3);
         System.out.println(message3.hashCode());
 
+       //System.out.println(message4.getData());
+
         //testing data.FileClackData
         FileClackData file1 = new FileClackData("Megan", "Hw1", 0);
         FileClackData file2 = new FileClackData();
         FileClackData file3 = new FileClackData();
+        FileClackData file4 = new FileClackData("Megan", "testFile",0);
 
         file2.setFileName("List of Favorite Books");
         System.out.println(file2);
@@ -39,5 +43,18 @@ public class TestClackData
 
         System.out.println(file1.getType());
         System.out.println(file1.getDate());
+
+        //testing read and write on unsecure files
+        file4.readFileContents();
+        System.out.println(file4.getData());
+        file4.setFileContents("Testing Write");
+        file4.writeFileContents();
+        System.out.println(file4.getData());
+
+        file1.readFileContents();
+        file1.getData();
+        file1.setFileContents("Trying something new");
+        file1.writeFileContents();
+        System.out.println(file1.getData());
     }
 }
