@@ -1,8 +1,11 @@
 package main;
 
 import data.ClackData;
+import data.FileClackData;
 
 import java.util.Objects;
+
+import java.util.Scanner;
 
 public class ClackClient
 {
@@ -33,8 +36,19 @@ public ClackClient()
 {
     this("Anon");
 }
-void start(){}
-void readClientData(){}
+void start(){
+    Scanner inFromStd = new Scanner(System.in);
+}
+void readClientData(){
+    switch(inFromStd.nextLine()) {
+        case "DONE":
+            closeConnection = True;
+            break;
+        case "SENDFILE":
+            FileClackData dataToSendToServer(this.userName, inFromStd.nextLine(), 3)
+
+    }
+}
 void sendData(){}
 void receiveData(){}
 void printData(){}
@@ -50,6 +64,7 @@ public int getPort()
 {
     return port;
 }
+
 @Override
 public boolean equals(Object o) {
     if (this == o) return true;
