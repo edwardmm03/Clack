@@ -8,6 +8,7 @@ public abstract class ClackData
     private String username;
     private int type;
     private Date date;
+    private char [] alphabet= {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
     //public constants
     final static int CONSTANT_LISTUSERS =0;
@@ -55,26 +56,22 @@ public abstract class ClackData
 
     public abstract String getData();
 
-    public String encrypt(String inputStringToEncrypt, String key)
+    protected String encrypt(String inputStringToEncrypt, String key)
     {
-        inputStringToEncrypt.toUpperCase();
-        key.toUpperCase();
-        String encrypted = " ";
-        String repeatedKey = key;
-        char [] alphabet= {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+        inputStringToEncrypt =inputStringToEncrypt.toUpperCase();
+        String encrypted = "";
+        String repeatedKey;
 
-        int i =0;
-        while(key.length() < inputStringToEncrypt.length())
-        {
-            if(i >= key.length())
-            {
-                i=0;
-            }
-            repeatedKey += key.charAt(i);
-            i ++;
+        StringBuilder builder = new StringBuilder(inputStringToEncrypt.length() + key.length() - 1);
+        while (builder.length() < inputStringToEncrypt.length()) {
+            builder.append(key);
         }
+        builder.setLength(inputStringToEncrypt.length());
+        repeatedKey = builder.toString();
 
-        for(int x =0; x < inputStringToEncrypt.length(); x++)
+        repeatedKey=repeatedKey.toUpperCase();
+
+        for(int x =0; x < repeatedKey.length(); x++)
         {
             char nextLetter;
             int newSpot;
@@ -110,5 +107,30 @@ public abstract class ClackData
 
         //if char not found in the array
         return -1;
+    }
+
+    protected String decrypt(String inputStringToDecrypt, String key)
+    {
+        String decrypted="";
+
+        for(int x =0; x < key.length(); x++)
+        {
+            char nextLetter;
+            int newSpot;
+
+            newSpot = findIndex(alphabet,inputStringToDecrypt.charAt(x)) - findIndex(alphabet,key.charAt(x));
+            newSpot = Math.abs(newSpot);
+
+            if(newSpot >= alphabet.length)
+            {
+                int temp = newSpot-25;
+                newSpot = temp -1;
+            }
+
+            nextLetter = alphabet[newSpot];
+            decrypted += nextLetter;
+        }
+
+        return decrypted;
     }
 }

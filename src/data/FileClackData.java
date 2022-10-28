@@ -48,6 +48,7 @@ public class FileClackData extends ClackData
 
     public void readFileContents()
     {
+        //reads from a file and saves the contents to the instance variable fileContents
         try
         {
             File file = new File (this.fileName);
@@ -76,6 +77,32 @@ public class FileClackData extends ClackData
     public void readFileContents(String key)
     {
         //reads from the file and sends encrypted contents to fileContents variable
+
+        String tempC ="";
+
+        try
+        {
+            File file = new File (this.fileName);
+            Scanner sc = new Scanner(file);
+
+            while(sc.hasNext())
+            {
+                tempC += sc.nextLine();
+            }
+            fileContents = encrypt(tempC,key);
+        }
+        catch(FileNotFoundException fnfe)
+        {
+            System.err.println("File does not exist");
+        }
+        catch(InputMismatchException ime)
+        {
+            System.err.println("Mismatch input type");
+        }
+        catch(IOException ioe)
+        {
+            System.err.println("IO Exception occured");
+        }
     }
     public void writeFileContents()
     {
@@ -100,6 +127,23 @@ public class FileClackData extends ClackData
     public void writeFileContents (String key)
     {
         //decrypt contents of fileContents and write them to the file
+        File file = new File(this.fileName);
+        try
+        {
+            BufferedWriter f_writer = new BufferedWriter(new FileWriter(file));
+
+            String fileContentsD = decrypt(fileContents,key);
+            f_writer.write(fileContentsD);
+            f_writer.close();
+        }
+        catch(FileNotFoundException fnfe)
+        {
+            System.err.println("File does not exist");
+        }
+        catch(IOException ioe)
+        {
+            System.err.println("Exception occured");
+        }
     }
 
     //overrides hash code
