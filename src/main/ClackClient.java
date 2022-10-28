@@ -45,7 +45,7 @@ void readClientData(){
             closeConnection = True;
             break;
         case "SENDFILE":
-            FileClackData dataToSendToServer(this.userName, inFromStd.nextLine(), 3)
+            FileClackData dataToSendToServer(this.userName, inFromStd.nextLine(), 3);
 
     }
 }
