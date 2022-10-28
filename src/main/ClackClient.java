@@ -40,14 +40,14 @@ void start(){
     Scanner inFromStd = new Scanner(System.in);
 }
 void readClientData(){
-    switch(inFromStd.nextLine()) {
-        case "DONE":
-            closeConnection = True;
-            break;
-        case "SENDFILE":
-            FileClackData dataToSendToServer(this.userName, inFromStd.nextLine(), 3);
+   // switch(inFromStd.nextLine()) {
+       // case "DONE":
+           // closeConnection = True;
+    //break;
+        //case "SENDFILE":
+           // FileClackData dataToSendToServer(this.userName, inFromStd.nextLine(), 3);
 
-    }
+    //}
 }
 void sendData(){}
 void receiveData(){}

@@ -113,7 +113,7 @@ public abstract class ClackData
     {
         String decrypted="";
 
-        for(int x =0; x < key.length(); x++)
+        for(int x =0; x < inputStringToDecrypt.length(); x++)
         {
             char nextLetter;
             int newSpot;
