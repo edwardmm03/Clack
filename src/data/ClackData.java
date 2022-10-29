@@ -8,7 +8,7 @@ public abstract class ClackData
     private String username;
     private int type;
     private Date date;
-    private char [] alphabet= {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+    private static char [] alphabet= {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
     //public constants
     final static int CONSTANT_LISTUSERS =0;
@@ -58,13 +58,14 @@ public abstract class ClackData
 
     protected String encrypt(String inputStringToEncrypt, String key)
     {
+        if (key == null){key = "a";}
+        if (inputStringToEncrypt == null) {System.err.println("No input");}
         inputStringToEncrypt =inputStringToEncrypt.toUpperCase();
-        String encrypted = "";
         String repeatedKey;
-
-        StringBuilder builder = new StringBuilder(inputStringToEncrypt.length() + key.length() - 1);
-        while (builder.length() < inputStringToEncrypt.length()) {
-            builder.append(key);
+        int temp;
+        StringBuilder encrypted = new StringBuilder(inputStringToEncrypt.length());
+        for (int i = 0; i < inputStringToEncrypt.length(); i++){
+            temp = inputStringToEncrypt.charAt(i) +
         }
         builder.setLength(inputStringToEncrypt.length());
         repeatedKey = builder.toString();
