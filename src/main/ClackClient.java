@@ -63,7 +63,7 @@ private void readClientData(){
         case "SENDFILE":
             input = inFromStd.next();
             System.out.println(input);
-            ClackData dataToSendToServer = new FileClackData(this.userName, input, 3);
+            dataToSendToServer = new FileClackData(this.userName, input, 3);
             try
             {
                 String temp = "";
@@ -101,6 +101,7 @@ private void readClientData(){
 private void sendData(){}
 private void receiveData(){}
 public void printData(){
+    if (dataToRecieveFromServer == null) {return;}
     System.out.println(dataToRecieveFromServer.getDate());
     System.out.println(dataToRecieveFromServer.getType());
     System.out.println(dataToRecieveFromServer.getUsername());

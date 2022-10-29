@@ -146,18 +146,14 @@ public class FileClackData extends ClackData
         }
     }
 
-    //overrides hash code
-    public int hashCode()
-    {
-        return Objects.hash(fileName) + Objects.hash(fileContents);
+    public int hashCode(){
+        return 5*(this.fileName.hashCode());
     }
 
-    //overrides equals
-    public boolean equals (FileClackData f)
-    {
-        return (this.fileName == f.fileName) && (this.fileContents == f.fileContents);
+    public boolean equals(Object other) {
+        if (this == other) {return true;}
+        else {return false;}
     }
-
     //returns a string describing the object
     public String toString()
     {

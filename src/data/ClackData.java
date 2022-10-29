@@ -61,11 +61,12 @@ public abstract class ClackData
         if (key == null){key = "a";}
         if (inputStringToEncrypt == null) {System.err.println("No input");}
         inputStringToEncrypt =inputStringToEncrypt.toUpperCase();
+        String encrypted = "";
         String repeatedKey;
-        int temp;
-        StringBuilder encrypted = new StringBuilder(inputStringToEncrypt.length());
-        for (int i = 0; i < inputStringToEncrypt.length(); i++){
-            temp = inputStringToEncrypt.charAt(i) +
+
+        StringBuilder builder = new StringBuilder(inputStringToEncrypt.length() + key.length() - 1);
+        while (builder.length() < inputStringToEncrypt.length()) {
+            builder.append(key);
         }
         builder.setLength(inputStringToEncrypt.length());
         repeatedKey = builder.toString();
