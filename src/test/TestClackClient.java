@@ -26,5 +26,7 @@ public class TestClackClient
         System.out.println(test3.hashCode());
         //toString
         System.out.println(test2.toString());
+        //Start
+        test1.start();
     }
 }
