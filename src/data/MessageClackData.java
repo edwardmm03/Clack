@@ -32,15 +32,18 @@ public class MessageClackData extends ClackData
     }
 
     //overrides the hashcode
-    public int hashCode()
-    {
-        return Objects.hash(message) ;
+    public int hashCode(){
+        return 17*(this.getType() + this.message.hashCode() + this.getUsername().hashCode()
+                + getDate().hashCode());
     }
 
-    //overrides the equals method
-    public boolean equals (MessageClackData m)
-    {
-        return this.message == m.message;
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     //returns a string describing the object
