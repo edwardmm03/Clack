@@ -55,7 +55,7 @@ public void main(String [] args)
     String input;
     String uName = null;
     String hName = null;
-    int pNumber = defaultPort;
+    int pNumber = '\0';
     Scanner console = new Scanner(System.in);
 
     System.out.println("Please enter the info of the server you want to connect to");
