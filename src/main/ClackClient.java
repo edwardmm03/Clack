@@ -13,19 +13,19 @@ import java.util.Scanner;
 
 public class ClackClient
 {
-private String userName;
-private String hostName;
+private static String userName;
+private static String hostName;
 private int port;
-private Boolean closeConnection;
-private ClackData dataToSendToServer;
-private ClackData dataToRecieveFromServer;
-private Scanner inFromStd;
+private static Boolean closeConnection;
+private static ClackData dataToSendToServer;
+private static ClackData dataToRecieveFromServer;
+private static Scanner inFromStd;
 private static final int defaultPort  = 7000;
 
 private static final String key = "TIME";
 
-private ObjectInputStream inFromServer;
-private ObjectOutputStream outToServer;
+private static ObjectInputStream inFromServer;
+private static ObjectOutputStream outToServer;
 
 public ClackClient(String userName, String hostName, int port)  throws IllegalArgumentException
 {
@@ -50,7 +50,7 @@ public ClackClient() throws IllegalArgumentException
     this("Anon");
 }
 
-public void main(String [] args)
+public static void main(String [] args)
 {
     String input;
     String uName = null;
@@ -82,7 +82,7 @@ public void main(String [] args)
     start();
 }
 
-public void start() {
+public static void start() {
 
     try
     {
@@ -108,21 +108,21 @@ public void start() {
     }
 
 }
-private void readClientData()
+private static void readClientData()
 {
-    String nextToken = this.inFromStd.next();
+    String nextToken = inFromStd.next();
 
         if (nextToken.equals("DONE"))
         {
-            this.closeConnection = true;
-            this.dataToSendToServer = new MessageClackData(this.userName, nextToken, key,
+            closeConnection = true;
+            dataToSendToServer = new MessageClackData(userName, nextToken, key,
                     ClackData.CONSTANT_LOGOUT);
         }
         else if (nextToken.equals("SENDFILE"))
         {
-            String filename = this.inFromStd.next();
-            this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
-            ((FileClackData) this.dataToSendToServer).readFileContents(key);
+            String filename = inFromStd.next();
+            dataToSendToServer = new FileClackData(userName, filename, ClackData.CONSTANT_SENDFILE);
+            ((FileClackData) dataToSendToServer).readFileContents(key);
 
         }
         else if (nextToken.equals("LISTUSERS"))
@@ -132,13 +132,13 @@ private void readClientData()
         }
         else
         {
-            String message = nextToken + this.inFromStd.nextLine();
-            this.dataToSendToServer = new MessageClackData(this.userName, message, key,
+            String message = nextToken + inFromStd.nextLine();
+            dataToSendToServer = new MessageClackData(userName, message, key,
             ClackData.CONSTANT_SENDMESSAGE);
         }
 }
 
-private void sendData()
+private static void sendData()
 {
     try
     {
@@ -149,7 +149,7 @@ private void sendData()
         System.err.println("IO Exception occurred");
     }
 }
-private void receiveData()
+private static void receiveData()
 {
     try
     {
@@ -160,7 +160,7 @@ private void receiveData()
         System.err.println("IO Exception occurred");
     }
 }
-public void printData(){
+public static void printData(){
     if (dataToRecieveFromServer == null) {return;}
     System.out.println(dataToRecieveFromServer.getDate());
     System.out.println(dataToRecieveFromServer.getType());

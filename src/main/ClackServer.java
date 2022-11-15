@@ -19,11 +19,11 @@ import java.util.Scanner;
 public class ClackServer {
     private static final int DEFAULT_PORT = 7000;  // The default port number
     private int port;  // An integer representing the port number on the server connected to
-    private boolean closeConnection;  // A boolean representing whether the connection is closed or not
-    private ClackData dataToReceiveFromClient;  // A ClackData object representing the data received from the client
-    private ClackData dataToSendToClient;  // A ClackData object representing the data sent to client
-    private ObjectInputStream inFromClient;  // An ObjectInputStream to manage input from the client
-    private ObjectOutputStream outToClient; // An ObjectOutputStream to send data to the client
+    private static boolean closeConnection;  // A boolean representing whether the connection is closed or not
+    private static ClackData dataToReceiveFromClient;  // A ClackData object representing the data received from the client
+    private static ClackData dataToSendToClient;  // A ClackData object representing the data sent to client
+    private static ObjectInputStream inFromClient;  // An ObjectInputStream to manage input from the client
+    private static ObjectOutputStream outToClient; // An ObjectOutputStream to send data to the client
 
     /**
      * The constructor that sets the port number.
@@ -51,7 +51,7 @@ public class ClackServer {
     public ClackServer() throws IllegalArgumentException {
         this(DEFAULT_PORT);
     }
-    public void main(String [] args){
+    public static void main(String [] args){
         String input = null;
         int temp = '\0';
         Scanner console = new Scanner(System.in);
@@ -71,7 +71,7 @@ public class ClackServer {
      * Does not return anything.
      * For now, it should have no code, just a declaration.
      */
-    public void start() {
+    public static void start() {
         try {
             ServerSocket sskt = new ServerSocket(DEFAULT_PORT);
             Socket cskt = sskt.accept();
@@ -95,7 +95,7 @@ public class ClackServer {
      * Does not return anything.
      * For now, it should have no code, just a declaration.
      */
-    public void receiveData() {
+    public static void receiveData() {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
         }
@@ -103,7 +103,7 @@ public class ClackServer {
         catch (ClassNotFoundException cnfn) {System.err.println("Class was not found");}
         if (dataToReceiveFromClient.getType() == 1)
         {
-        this.closeConnection = true;
+        closeConnection = true;
         }
         }
 
@@ -112,7 +112,7 @@ public class ClackServer {
      * Does not return anything.
      * For now, it should have no code, just a declaration.
      */
-    public void sendData() {
+    public static void sendData() {
             try {
                 outToClient.writeObject(dataToSendToClient);
             }
