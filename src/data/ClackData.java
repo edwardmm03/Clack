@@ -12,10 +12,10 @@ public abstract class ClackData implements Serializable
     private char [] alphabet= {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
     //public constants
-    final static int CONSTANT_LISTUSERS =0;
-    final static int CONSTANT_LOGOUT =1;
-    final static int CONSTANT_SENDMESSAGE=2;
-    final static int CONSTANT_SENDFILE =3;
+    public final static int CONSTANT_LISTUSERS =0;
+    public final static int CONSTANT_LOGOUT =1;
+    public final static int CONSTANT_SENDMESSAGE=2;
+    public final static int CONSTANT_SENDFILE =3;
 
     //constructor for username and type
     public ClackData(String u, int t)

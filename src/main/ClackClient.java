@@ -27,7 +27,7 @@ private static final String key = "TIME";
 private ObjectInputStream inFromServer;
 private ObjectOutputStream outToServer;
 
-public ClackClient(String userName, String hostName, int port)
+public ClackClient(String userName, String hostName, int port)  throws IllegalArgumentException
 {
     this.userName = userName;
     this.hostName = hostName;
@@ -37,7 +37,7 @@ public ClackClient(String userName, String hostName, int port)
     inFromServer = null;
     outToServer = null;
 }
-public ClackClient(String userName, String hostName)
+public ClackClient(String userName, String hostName) throws IllegalArgumentException
 {
     this(userName, hostName, defaultPort);
 }
@@ -45,27 +45,55 @@ public ClackClient(String userName)
 {
     this(userName, "localhost");
 }
-public ClackClient()
+public ClackClient() throws IllegalArgumentException
 {
     this("Anon");
 }
 
-public static void main(String [] args)
+public void main(String [] args)
 {
-    //uses command line arguements(idk what that means)
+    String input;
+    String uName = null;
+    String hName = null;
+    int pNumber = defaultPort;
+    Scanner console = new Scanner(System.in);
+
+    System.out.println("Please enter the info of the server you want to connect to");
+    input = console.nextLine();
+    console.close();
+
+    if(input.contains("@")&&input.contains(":"))
+    {
+        uName= input.substring(0,input.indexOf('@'));
+        hName = input.substring(input.indexOf('@')+1,input.indexOf(':'));
+        pNumber = Integer.parseInt((input.substring(input.indexOf(':')+1)));
+    }
+    else if(input.contains("@"))
+    {
+        uName= input.substring(0,input.indexOf('@'));
+        hName = input.substring(input.indexOf('@')+1);
+    }
+    else if(!input.equals(null))
+    {
+        uName=input;
+    }
+
+    ClackClient cTest = new ClackClient(uName,hName,pNumber);
+    start();
 }
 
-public void start(){
+public void start() {
 
     try
     {
         Socket skt = new Socket(hostName, defaultPort);
-        PrintWriter out = new PrintWriter( outToServer);
+        outToServer = new ObjectOutputStream(skt.getOutputStream());
+        inFromServer = new ObjectInputStream(skt.getInputStream());
         inFromStd = new Scanner(System.in);
-        Scanner in = new Scanner(inFromServer);
 
         while (!closeConnection)
         {
+            readClientData();
             sendData();
             receiveData();
             printData();
@@ -74,77 +102,62 @@ public void start(){
         inFromStd.close();
         skt.close();
     }
-    catch(Exception e)
+    catch(IOException ioe)
     {
-        System.err.println(e.getMessage());
+        System.err.println("IO Exception occurred");
     }
-}
-private void readClientData(){
-    System.out.println("Input command");
-    String input = inFromStd.next();
-    input = input.toUpperCase();
-    switch(input) {
-        case "DONE":
-            closeConnection = true;
-            break;
-        case "SENDFILE":
-            input = inFromStd.next();
-            System.out.println(input);
-            dataToSendToServer = new FileClackData(this.userName, input, 3);
-            try
-            {
-                String temp = "";
-                File file = new File (input);
-                Scanner sc = new Scanner(file);
 
-                while(sc.hasNext())
-                {
-                    temp += sc.nextLine();
-                }
-            }
-            catch(FileNotFoundException fnfe)
-            {
-                System.err.println("File does not exist");
-                dataToSendToServer = null;
-            }
-            catch(InputMismatchException ime)
-            {
-                System.err.println("Mismatch input type");
-                dataToSendToServer = null;
-            }
-            catch(IOException ioe)
-            {
-                System.err.println("IO Exception occured");
-                dataToSendToServer = null;
-            }
-            break;
-        case "LISTUSERS":
-            break;
-        default:
-            dataToSendToServer = new MessageClackData(userName, input, 2);
-            break;
-    }
 }
+private void readClientData()
+{
+    String nextToken = this.inFromStd.next();
+
+        if (nextToken.equals("DONE"))
+        {
+            this.closeConnection = true;
+            this.dataToSendToServer = new MessageClackData(this.userName, nextToken, key,
+                    ClackData.CONSTANT_LOGOUT);
+        }
+        else if (nextToken.equals("SENDFILE"))
+        {
+            String filename = this.inFromStd.next();
+            this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
+            ((FileClackData) this.dataToSendToServer).readFileContents(key);
+
+        }
+        else if (nextToken.equals("LISTUSERS"))
+        {
+            // Does nothing for now. Eventually, this will return a list of users.
+            // For Part 2, do not test LISTUSERS; otherwise, it may generate an error.
+        }
+        else
+        {
+            String message = nextToken + this.inFromStd.nextLine();
+            this.dataToSendToServer = new MessageClackData(this.userName, message, key,
+            ClackData.CONSTANT_SENDMESSAGE);
+        }
+}
+
 private void sendData()
 {
     try
     {
-        readClientData();
+        outToServer.writeObject(dataToSendToServer);
     }
-    catch (Exception e)
+    catch(IOException ioe)
     {
-        System.err.println(e.getMessage());
+        System.err.println("IO Exception occurred");
     }
 }
 private void receiveData()
 {
     try
     {
-       //im confused here
+        dataToRecieveFromServer = (ClackData) inFromServer.readObject();
     }
     catch(Exception e)
     {
-        System.err.println(e.getMessage());
+        System.err.println("IO Exception occurred");
     }
 }
 public void printData(){
