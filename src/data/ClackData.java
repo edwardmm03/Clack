@@ -56,81 +56,70 @@ public abstract class ClackData
 
     public abstract String getData();
 
-    protected String encrypt(String inputStringToEncrypt, String key)
-    {
-        inputStringToEncrypt =inputStringToEncrypt.toUpperCase();
-        String encrypted = "";
-        String repeatedKey;
-
-        StringBuilder builder = new StringBuilder(inputStringToEncrypt.length() + key.length() - 1);
-        while (builder.length() < inputStringToEncrypt.length()) {
-            builder.append(key);
+    protected String encrypt(String inputStringToEncrypt, String key) {
+        //corrected from solution
+        if (inputStringToEncrypt == null) {
+            return null;
         }
-        builder.setLength(inputStringToEncrypt.length());
-        repeatedKey = builder.toString();
 
-        repeatedKey=repeatedKey.toUpperCase();
+        final int keyLen = key.length();
+        int keyIndex = 0;
+        StringBuilder stringEncrypted = new StringBuilder();
 
-        for(int x =0; x < repeatedKey.length(); x++)
-        {
-            char nextLetter;
-            int newSpot;
+        for (int i = 0; i < inputStringToEncrypt.length(); i++) {
+            char inputCharToEncrypt = inputStringToEncrypt.charAt(i);
+            char inputCharEncrypted;
 
-            newSpot = findIndex(alphabet,inputStringToEncrypt.charAt(x)) + findIndex(alphabet,repeatedKey.charAt(x));
-            if(newSpot > 25)
-            {
-                int temp = newSpot-25;
-                newSpot = temp -1;
+            if (Character.isLowerCase(inputCharToEncrypt)) {
+                char keyChar = Character.toLowerCase(key.charAt(keyIndex));
+                inputCharEncrypted = (char) (((inputCharToEncrypt - 'a') + (keyChar - 'a')) % 26 + 'a');
+                keyIndex = (keyIndex + 1) % keyLen;
+
+            } else if (Character.isUpperCase(inputCharToEncrypt)) {
+                char keyChar = Character.toUpperCase(key.charAt(keyIndex));
+                inputCharEncrypted = (char) (((inputCharToEncrypt - 'A') + (keyChar - 'A')) % 26 + 'A');
+                keyIndex = (keyIndex + 1) % keyLen;
+
+            } else {
+                inputCharEncrypted = inputCharToEncrypt;
             }
 
-            nextLetter = alphabet[newSpot];
-            encrypted += nextLetter;
+            stringEncrypted.append(inputCharEncrypted);
         }
 
-        return encrypted;
+        return stringEncrypted.toString();
     }
 
-    private int findIndex(char arr[], char n)
-    {
-        int y =0;
-        while(y < arr.length)
-        {
-            if(arr[y] == n)
-            {
-                return y;
-            }
-            else
-            {
-                y++;
-            }
+    protected String decrypt(String inputStringToDecrypt, String key) {
+        if (inputStringToDecrypt == null) {
+            return null;
         }
 
-        //if char not found in the array
-        return -1;
-    }
+        final int keyLen = key.length();
+        int keyIndex = 0;
+        StringBuilder stringDecrypted = new StringBuilder();
 
-    protected String decrypt(String inputStringToDecrypt, String key)
-    {
-        String decrypted="";
+        for (int i = 0; i < inputStringToDecrypt.length(); i++) {
+            char inputCharToDecrypt = inputStringToDecrypt.charAt(i);
+            char inputCharDecrypted;
 
-        for(int x =0; x < inputStringToDecrypt.length(); x++)
-        {
-            char nextLetter;
-            int newSpot;
+            if (Character.isLowerCase(inputCharToDecrypt)) {
+                char keyChar = Character.toLowerCase(key.charAt(keyIndex));
+                inputCharDecrypted = (char) ((inputCharToDecrypt - keyChar + 26) % 26 + 'a');
+                keyIndex = (keyIndex + 1) % keyLen;
 
-            newSpot = findIndex(alphabet,inputStringToDecrypt.charAt(x)) - findIndex(alphabet,key.charAt(x));
-            newSpot = Math.abs(newSpot);
+            } else if (Character.isUpperCase(inputCharToDecrypt)) {
+                char keyChar = Character.toUpperCase(key.charAt(keyIndex));
+                inputCharDecrypted = (char) ((inputCharToDecrypt - keyChar + 26) % 26 + 'A');
+                keyIndex = (keyIndex + 1) % keyLen;
 
-            if(newSpot >= alphabet.length)
-            {
-                int temp = newSpot-25;
-                newSpot = temp -1;
+            } else {
+                inputCharDecrypted = inputCharToDecrypt;
             }
 
-            nextLetter = alphabet[newSpot];
-            decrypted += nextLetter;
+            stringDecrypted.append(inputCharDecrypted);
         }
 
-        return decrypted;
+        return stringDecrypted.toString();
     }
 }
