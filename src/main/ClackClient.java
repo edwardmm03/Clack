@@ -2,7 +2,12 @@ package main;
 
 import data.ClackData;
 import data.FileClackData;
+import data.MessageClackData;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Objects;
 
 import java.util.Scanner;
@@ -15,7 +20,9 @@ private int port;
 private Boolean closeConnection;
 private ClackData dataToSendToServer;
 private ClackData dataToRecieveFromServer;
+private Scanner inFromStd;
 private static final int defaultPort  = 7000;
+private static final String key = "TIME";
 public ClackClient(String userName, String hostName, int port)
 {
     this.userName = userName;
@@ -36,22 +43,70 @@ public ClackClient()
 {
     this("Anon");
 }
-void start(){
-    Scanner inFromStd = new Scanner(System.in);
+public void start(){
+   inFromStd = new Scanner(System.in);
+   while (!closeConnection) {
+       readClientData();
+       dataToRecieveFromServer = dataToSendToServer;
+       //printData();
+   }
+    inFromStd.close();
 }
-void readClientData(){
-   // switch(inFromStd.nextLine()) {
-       // case "DONE":
-           // closeConnection = True;
-    //break;
-        //case "SENDFILE":
-           // FileClackData dataToSendToServer(this.userName, inFromStd.nextLine(), 3);
+private void readClientData(){
+    System.out.println("Input command");
+    String input = inFromStd.next();
+    input = input.toUpperCase();
+    switch(input) {
+        case "DONE":
+            closeConnection = true;
+            break;
+        case "SENDFILE":
+            input = inFromStd.next();
+            System.out.println(input);
+            dataToSendToServer = new FileClackData(this.userName, input, 3);
+            try
+            {
+                String temp = "";
+                File file = new File (input);
+                Scanner sc = new Scanner(file);
 
-    //}
+                while(sc.hasNext())
+                {
+                    temp += sc.nextLine();
+                }
+            }
+            catch(FileNotFoundException fnfe)
+            {
+                System.err.println("File does not exist");
+                dataToSendToServer = null;
+            }
+            catch(InputMismatchException ime)
+            {
+                System.err.println("Mismatch input type");
+                dataToSendToServer = null;
+            }
+            catch(IOException ioe)
+            {
+                System.err.println("IO Exception occured");
+                dataToSendToServer = null;
+            }
+            break;
+        case "LISTUSERS":
+            break;
+        default:
+            dataToSendToServer = new MessageClackData(userName, input, 2);
+            break;
+    }
 }
-void sendData(){}
-void receiveData(){}
-void printData(){}
+private void sendData(){}
+private void receiveData(){}
+public void printData(){
+    if (dataToRecieveFromServer == null) {return;}
+    System.out.println(dataToRecieveFromServer.getDate());
+    System.out.println(dataToRecieveFromServer.getType());
+    System.out.println(dataToRecieveFromServer.getUsername());
+    System.out.println(dataToRecieveFromServer.getData());
+}
 public String getUserName()
 {
     return userName;
