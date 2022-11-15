@@ -10,12 +10,12 @@ public class TestClackServer
 
         //getPort
         System.out.println(test1.getPort());
-        System.out.println(test2.getPort());
+        //System.out.println(test2.getPort());
         //equals
         System.out.println(test1.equals(test2));
         System.out.println(test1.equals(test1c));
         //hashCode
-        System.out.println(test2.hashCode());
+       System.out.println(test2.hashCode());
         //toString
         System.out.print(test1.toString());
     }
