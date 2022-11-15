@@ -1,8 +1,9 @@
 package data;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class ClackData
+public abstract class ClackData implements Serializable
 {
     //private variables
     private String username;
