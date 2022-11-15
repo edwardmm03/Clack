@@ -4,9 +4,8 @@ import data.ClackData;
 import data.FileClackData;
 import data.MessageClackData;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
 import java.util.InputMismatchException;
 import java.util.Objects;
 
@@ -22,7 +21,12 @@ private ClackData dataToSendToServer;
 private ClackData dataToRecieveFromServer;
 private Scanner inFromStd;
 private static final int defaultPort  = 7000;
+
 private static final String key = "TIME";
+
+private ObjectInputStream inFromServer;
+private ObjectOutputStream outToServer;
+
 public ClackClient(String userName, String hostName, int port)
 {
     this.userName = userName;
@@ -30,6 +34,8 @@ public ClackClient(String userName, String hostName, int port)
     this.port = port;
     dataToSendToServer = null;
     dataToRecieveFromServer = null;
+    inFromServer = null;
+    outToServer = null;
 }
 public ClackClient(String userName, String hostName)
 {
@@ -43,14 +49,35 @@ public ClackClient()
 {
     this("Anon");
 }
+
+public static void main(String [] args)
+{
+    //uses command line arguements(idk what that means)
+}
+
 public void start(){
-   inFromStd = new Scanner(System.in);
-   while (!closeConnection) {
-       readClientData();
-       dataToRecieveFromServer = dataToSendToServer;
-       //printData();
-   }
-    inFromStd.close();
+
+    try
+    {
+        Socket skt = new Socket(hostName, defaultPort);
+        PrintWriter out = new PrintWriter( outToServer);
+        inFromStd = new Scanner(System.in);
+        Scanner in = new Scanner(inFromServer);
+
+        while (!closeConnection)
+        {
+            sendData();
+            receiveData();
+            printData();
+        }
+
+        inFromStd.close();
+        skt.close();
+    }
+    catch(Exception e)
+    {
+        System.err.println(e.getMessage());
+    }
 }
 private void readClientData(){
     System.out.println("Input command");
@@ -98,8 +125,28 @@ private void readClientData(){
             break;
     }
 }
-private void sendData(){}
-private void receiveData(){}
+private void sendData()
+{
+    try
+    {
+        readClientData();
+    }
+    catch (Exception e)
+    {
+        System.err.println(e.getMessage());
+    }
+}
+private void receiveData()
+{
+    try
+    {
+       //im confused here
+    }
+    catch(Exception e)
+    {
+        System.err.println(e.getMessage());
+    }
+}
 public void printData(){
     if (dataToRecieveFromServer == null) {return;}
     System.out.println(dataToRecieveFromServer.getDate());
@@ -142,4 +189,5 @@ public String toString() {
             ", dataToRecieveFromServer=" + dataToRecieveFromServer +
             '}';
     }
+
 }
