@@ -172,7 +172,7 @@ public static void printData(){
     System.out.println(dataToRecieveFromServer.getDate());
     System.out.println(dataToRecieveFromServer.getType());
     System.out.println(dataToRecieveFromServer.getUsername());
-    System.out.println(dataToRecieveFromServer.getData());
+    System.out.println(dataToRecieveFromServer.getData(key));
 }
 public String getUserName()
 {

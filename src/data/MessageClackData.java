@@ -26,8 +26,15 @@ public class MessageClackData extends ClackData
         message= encrypt(m,k);
     }
 
+
     public String getData()
     {
+        return message;
+    }
+    public String getData(String k)
+    {
+
+        message = decrypt(message,k);
         return message;
     }
 
