@@ -52,33 +52,41 @@ public ClackClient() throws IllegalArgumentException
 
 public static void main(String [] args)
 {
-    String input = null;
-    String uName = null;
-    String hName = null;
-    int pNumber = '\0';
-    Scanner console = new Scanner(System.in);
+    String input = "";
+    String uName = "";
+    String hName = "";
+    int pNumber = 0;
+    ClackClient cTest;
 
-    System.out.println("Please enter the information of the server you want to connect to: ");
-    input = console.nextLine();
-
-    if(input.contains("@")&&input.contains(":"))
+    for(String i : args)
     {
-        uName= input.substring(0,input.indexOf('@'));
+        input += i;
+    }
+
+    if(input.contains("@") && input.contains(":"))
+    {
+        uName = input.substring(0,input.indexOf('@'));
         hName = input.substring(input.indexOf('@')+1,input.indexOf(':'));
-        pNumber = Integer.parseInt((input.substring(input.indexOf(':')+1)));
+        pNumber=Integer.parseInt((input.substring(input.indexOf(':')+1)));
+        cTest = new ClackClient(uName,hName,pNumber);
     }
     else if(input.contains("@"))
     {
-        uName= input.substring(0,input.indexOf('@'));
+        uName = input.substring(0,input.indexOf('@'));
         hName = input.substring(input.indexOf('@')+1);
+        cTest = new ClackClient(uName,hName);
     }
-    else if(!input.equals(null))
+    else if(!input.equals(""))
     {
-        uName=input;
+        uName = input;
+        cTest= new ClackClient(uName);
+    }
+    else
+    {
+       cTest = new ClackClient();
     }
 
-    ClackClient cTest = new ClackClient(uName,hName,pNumber);
-    start();
+    cTest.start();
 }
 
 public static void start() {
