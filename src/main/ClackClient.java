@@ -41,7 +41,7 @@ public ClackClient(String userName, String hostName) throws IllegalArgumentExcep
 {
     this(userName, hostName, defaultPort);
 }
-public ClackClient(String userName)
+public ClackClient(String userName) 
 {
     this(userName, "localhost");
 }
@@ -167,13 +167,14 @@ private static void receiveData()
         System.err.println("IO Exception occurred");
     }
 }
-public static void printData(){
-    if (dataToRecieveFromServer == null) {return;}
-    System.out.println(dataToRecieveFromServer.getDate());
-    System.out.println(dataToRecieveFromServer.getType());
-    System.out.println(dataToRecieveFromServer.getUsername());
-    System.out.println(dataToRecieveFromServer.getData());
-}
+    public static void printData() {
+        if (dataToRecieveFromServer != null) {
+            System.out.println("From: " + dataToRecieveFromServer.getUsername());
+            System.out.println("Date: " + dataToRecieveFromServer.getDate());
+            System.out.println("Data: " + dataToRecieveFromServer.getData(key));
+            System.out.println();
+        }
+    }
 public String getUserName()
 {
     return userName;

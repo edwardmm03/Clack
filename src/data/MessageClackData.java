@@ -26,9 +26,14 @@ public class MessageClackData extends ClackData
         message= encrypt(m,k);
     }
 
-    public String getData()
-    {
-        return message;
+    @Override
+    public String getData() {
+        return this.message;
+    }
+
+    @Override
+    public String getData(String key) {
+        return decrypt(this.message, key);
     }
 
     //overrides the hashcode

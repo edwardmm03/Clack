@@ -43,17 +43,18 @@ public class ClackServer {
         this(DEFAULT_PORT);
     }
     public static void main(String[] args){
-        if (args.length == 0) {ClackServer runner;}
+        ClackServer runner;
+        if (args.length == 0) {runner = new ClackServer();}
         else {
             try {
                 int port = Integer.parseInt(args[0]);
-                ClackServer runner = new ClackServer(port);
+                runner = new ClackServer(port);
             } catch (NumberFormatException nfe) {
                 System.err.println("Input an int as argument");
-                ClackServer runner;
+                runner = new ClackServer();
             }
         }
-        start();
+        runner.start();
     }
     /**
      * Starts the server.
@@ -62,7 +63,6 @@ public class ClackServer {
      * runs a loop to echo data until closeConnection is set to true
      */
     public static void start() {
-        System.out.println("Started");
         try {
             ServerSocket sskt = new ServerSocket(DEFAULT_PORT);
             Socket cskt = sskt.accept();
