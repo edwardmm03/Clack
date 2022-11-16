@@ -52,18 +52,11 @@ public class ClackServer {
         this(DEFAULT_PORT);
     }
     public static void main(String [] args){
-        String input = null;
-        int temp = '\0';
-        Scanner console = new Scanner(System.in);
-        System.out.println("Enter a port number to connect to");
-        input = console.nextLine();
-        if (!input.equals(null))
-        {
-            temp = Integer.parseInt(input);
-            ClackServer runner = new ClackServer(temp);
+        if (args == null) {
+            ClackServer runner;
         }
-        else {ClackServer runner;}
-        console.close();
+        else {ClackServer runner = new ClackServer(Integer.getInteger(args[0]));}
+        System.out.println("Starting");
         start();
     }
     /**
@@ -72,6 +65,7 @@ public class ClackServer {
      * For now, it should have no code, just a declaration.
      */
     public static void start() {
+        System.out.println("Started");
         try {
             ServerSocket sskt = new ServerSocket(DEFAULT_PORT);
             Socket cskt = sskt.accept();
