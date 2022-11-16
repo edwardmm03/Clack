@@ -3,19 +3,10 @@ package main;
 import data.ClackData;
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
-/**
- * The ClackServer class is a blueprint for a ClackServer object that contains information about the
- * port number that clients connect to, a boolean representing whether the server needs to be
- * closed or not, and ClackData objects representing data sent to and received from the client. The
- * server class does not need to know the host name (as the server program runs on its own computer),
- * it just needs to know what port the clients connect to. In our application, all clients will connect
- * to a single port.
- *
- * @author xinchaosong
- */
 public class ClackServer {
     private static final int DEFAULT_PORT = 7000;  // The default port number
     private int port;  // An integer representing the port number on the server connected to
@@ -27,7 +18,7 @@ public class ClackServer {
 
     /**
      * The constructor that sets the port number.
-     * Should set dataToReceiveFromClient and dataToSendToClient as null.
+     * Sets dataToReceiveFromClient and dataToSendToClient as null.
      *
      * @param port an int representing the port number on the server connected to
      */
@@ -51,25 +42,25 @@ public class ClackServer {
     public ClackServer() throws IllegalArgumentException {
         this(DEFAULT_PORT);
     }
-    public static void main(String [] args){
-        String input = null;
-        int temp = '\0';
-        Scanner console = new Scanner(System.in);
-        System.out.println("Enter a port number to connect to");
-        input = console.nextLine();
-        if (!input.equals(null))
-        {
-            temp = Integer.parseInt(input);
-            ClackServer runner = new ClackServer(temp);
+    public static void main(String[] args){
+        ClackServer runner;
+        if (args.length == 0) {runner = new ClackServer();}
+        else {
+            try {
+                int port = Integer.parseInt(args[0]);
+                runner = new ClackServer(port);
+            } catch (NumberFormatException nfe) {
+                System.err.println("Input an int as argument");
+                runner = new ClackServer();
+            }
         }
-        else {ClackServer runner;}
-        console.close();
-        start();
+        runner.start();
     }
     /**
      * Starts the server.
      * Does not return anything.
-     * For now, it should have no code, just a declaration.
+     * Creates a server socket and a client socket to facilitate input and output
+     * runs a loop to echo data until closeConnection is set to true
      */
     public static void start() {
         try {
@@ -92,8 +83,7 @@ public class ClackServer {
 
     /**
      * Receives data from client.
-     * Does not return anything.
-     * For now, it should have no code, just a declaration.
+     * Does not return anything
      */
     public static void receiveData() {
         try {
@@ -110,7 +100,6 @@ public class ClackServer {
     /**
      * Sends data to client.
      * Does not return anything.
-     * For now, it should have no code, just a declaration.
      */
     public static void sendData() {
             try {
