@@ -52,12 +52,14 @@ public ClackClient() throws IllegalArgumentException
 
 public static void main(String [] args)
 {
-    String input;
+    String input = null;
     String uName = null;
     String hName = null;
     int pNumber = '\0';
+    Scanner console = new Scanner(System.in);
 
-    input = args[0];
+    System.out.println("Please enter the information of the server you want to connect to: ");
+    input = console.nextLine();
 
     if(input.contains("@")&&input.contains(":"))
     {
