@@ -32,3 +32,13 @@ WWZI
 
 Process finished with exit code 0
 
+In this final test we made sure that the message was properly decryped when it was printed back after being
+received from the server.
+
+hello world
+Tue Nov 15 23:13:12 EST 2022
+2
+Kell
+hello world
+
+
