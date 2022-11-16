@@ -16,7 +16,7 @@ public class ClackClient
 private static String userName;
 private static String hostName;
 private int port;
-private static Boolean closeConnection;
+private static Boolean closeConnection = false;
 private static ClackData dataToSendToServer;
 private static ClackData dataToRecieveFromServer;
 private static Scanner inFromStd;
@@ -56,11 +56,8 @@ public static void main(String [] args)
     String uName = null;
     String hName = null;
     int pNumber = '\0';
-    Scanner console = new Scanner(System.in);
 
-    System.out.println("Please enter the info of the server you want to connect to");
-    input = console.nextLine();
-    console.close();
+    input = args[0];
 
     if(input.contains("@")&&input.contains(":"))
     {
