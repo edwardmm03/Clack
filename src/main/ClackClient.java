@@ -18,7 +18,7 @@ private static String hostName;
 private int port;
 private static Boolean closeConnection = false;
 private static ClackData dataToSendToServer;
-private static ClackData dataToRecieveFromServer;
+private static ClackData dataToReceiveFromServer;
 private static Scanner inFromStd;
 private static final int defaultPort  = 7000;
 
@@ -33,7 +33,7 @@ public ClackClient(String userName, String hostName, int port)  throws IllegalAr
     this.hostName = hostName;
     this.port = port;
     dataToSendToServer = null;
-    dataToRecieveFromServer = null;
+    dataToReceiveFromServer = null;
     inFromServer = null;
     outToServer = null;
 }
@@ -97,8 +97,10 @@ public static void start() {
         outToServer = new ObjectOutputStream(skt.getOutputStream());
         inFromServer = new ObjectInputStream(skt.getInputStream());
         inFromStd = new Scanner(System.in);
+
         //No clue how to pass the client over with the correct info
         Thread clientThread = new Thread(new ClientSideServerListener(new ClackClient()));
+
         while (!closeConnection)
         {
             readClientData();
@@ -159,25 +161,6 @@ public static void sendData()
         System.err.println("IO Exception occurred");
     }
 }
-public static void receiveData()
-{
-    try
-    {
-        dataToRecieveFromServer = (ClackData) inFromServer.readObject();
-    }
-    catch(Exception e)
-    {
-        System.err.println("IO Exception occurred");
-    }
-}
-    public static void printData() {
-        if (dataToRecieveFromServer != null) {
-            System.out.println("From: " + dataToRecieveFromServer.getUsername());
-            System.out.println("Date: " + dataToRecieveFromServer.getDate());
-            System.out.println("Data: " + dataToRecieveFromServer.getData(key));
-            System.out.println();
-        }
-    }
 public String getUserName()
 {
     return userName;
@@ -197,7 +180,7 @@ public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ClackClient that = (ClackClient) o;
-    return port == that.port && Objects.equals(userName, that.userName) && Objects.equals(hostName, that.hostName) && Objects.equals(closeConnection, that.closeConnection) && Objects.equals(dataToSendToServer, that.dataToSendToServer) && Objects.equals(dataToRecieveFromServer, that.dataToRecieveFromServer);
+    return port == that.port && Objects.equals(userName, that.userName) && Objects.equals(hostName, that.hostName) && Objects.equals(closeConnection, that.closeConnection) && Objects.equals(dataToSendToServer, that.dataToSendToServer) && Objects.equals(dataToReceiveFromServer, that.dataToReceiveFromServer);
 }
 @Override
 public int hashCode() {
@@ -211,7 +194,7 @@ public String toString() {
             ", port=" + port +
             ", closeConnection=" + closeConnection +
             ", dataToSendToServer=" + dataToSendToServer +
-            ", dataToRecieveFromServer=" + dataToRecieveFromServer +
+            ", dataToRecieveFromServer=" + dataToReceiveFromServer +
             '}';
     }
 
