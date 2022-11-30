@@ -51,6 +51,12 @@ public class FileClackData extends ClackData
         return decrypt(this.fileContents, key);
     }
 
+    public String getData(String k)
+    {
+        fileContents = decrypt(fileContents,k);
+        return fileContents;
+    }
+
     public void readFileContents()
     {
         //reads from a file and saves the contents to the instance variable fileContents
