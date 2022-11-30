@@ -97,13 +97,16 @@ public static void start() {
         outToServer = new ObjectOutputStream(skt.getOutputStream());
         inFromServer = new ObjectInputStream(skt.getInputStream());
         inFromStd = new Scanner(System.in);
-
+        //No clue how to pass the client over with the correct info
+        Thread clientThread = new Thread(new ClientSideServerListener(new ClackClient()));
         while (!closeConnection)
         {
             readClientData();
             sendData();
-            receiveData();
-            printData();
+            if (closeConnection) {
+                break;
+            }
+            clientThread.run();
         }
 
         inFromStd.close();
@@ -115,7 +118,7 @@ public static void start() {
     }
 
 }
-private static void readClientData()
+public static void readClientData()
 {
     String nextToken = inFromStd.next();
 
@@ -145,7 +148,7 @@ private static void readClientData()
         }
 }
 
-private static void sendData()
+public static void sendData()
 {
     try
     {
@@ -156,7 +159,7 @@ private static void sendData()
         System.err.println("IO Exception occurred");
     }
 }
-private static void receiveData()
+public static void receiveData()
 {
     try
     {
@@ -187,6 +190,7 @@ public int getPort()
 {
     return port;
 }
+public boolean getCloseConnection(){return closeConnection;}
 
 @Override
 public boolean equals(Object o) {
