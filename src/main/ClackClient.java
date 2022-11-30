@@ -159,25 +159,7 @@ public static void sendData()
         System.err.println("IO Exception occurred");
     }
 }
-public static void receiveData()
-{
-    try
-    {
-        dataToRecieveFromServer = (ClackData) inFromServer.readObject();
-    }
-    catch(Exception e)
-    {
-        System.err.println("IO Exception occurred");
-    }
-}
-    public static void printData() {
-        if (dataToRecieveFromServer != null) {
-            System.out.println("From: " + dataToRecieveFromServer.getUsername());
-            System.out.println("Date: " + dataToRecieveFromServer.getDate());
-            System.out.println("Data: " + dataToRecieveFromServer.getData(key));
-            System.out.println();
-        }
-    }
+
 public String getUserName()
 {
     return userName;
