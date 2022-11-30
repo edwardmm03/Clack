@@ -41,7 +41,7 @@ public ClackClient(String userName, String hostName) throws IllegalArgumentExcep
 {
     this(userName, hostName, defaultPort);
 }
-public ClackClient(String userName)
+public ClackClient(String userName) 
 {
     this(userName, "localhost");
 }
@@ -97,13 +97,16 @@ public static void start() {
         outToServer = new ObjectOutputStream(skt.getOutputStream());
         inFromServer = new ObjectInputStream(skt.getInputStream());
         inFromStd = new Scanner(System.in);
-
+        //No clue how to pass the client over with the correct info
+        Thread clientThread = new Thread(new ClientSideServerListener(new ClackClient()));
         while (!closeConnection)
         {
             readClientData();
             sendData();
-            receiveData();
-            printData();
+            if (closeConnection) {
+                break;
+            }
+            clientThread.run();
         }
 
         inFromStd.close();
@@ -115,7 +118,7 @@ public static void start() {
     }
 
 }
-private static void readClientData()
+public static void readClientData()
 {
     String nextToken = inFromStd.next();
 
@@ -145,7 +148,7 @@ private static void readClientData()
         }
 }
 
-private static void sendData()
+public static void sendData()
 {
     try
     {
@@ -156,7 +159,7 @@ private static void sendData()
         System.err.println("IO Exception occurred");
     }
 }
-private static void receiveData()
+public static void receiveData()
 {
     try
     {
@@ -167,13 +170,14 @@ private static void receiveData()
         System.err.println("IO Exception occurred");
     }
 }
-public static void printData(){
-    if (dataToRecieveFromServer == null) {return;}
-    System.out.println(dataToRecieveFromServer.getDate());
-    System.out.println(dataToRecieveFromServer.getType());
-    System.out.println(dataToRecieveFromServer.getUsername());
-    System.out.println(dataToRecieveFromServer.getData(key));
-}
+    public static void printData() {
+        if (dataToRecieveFromServer != null) {
+            System.out.println("From: " + dataToRecieveFromServer.getUsername());
+            System.out.println("Date: " + dataToRecieveFromServer.getDate());
+            System.out.println("Data: " + dataToRecieveFromServer.getData(key));
+            System.out.println();
+        }
+    }
 public String getUserName()
 {
     return userName;
@@ -186,6 +190,7 @@ public int getPort()
 {
     return port;
 }
+public boolean getCloseConnection(){return closeConnection;}
 
 @Override
 public boolean equals(Object o) {
