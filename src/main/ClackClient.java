@@ -97,10 +97,7 @@ public static void start() {
         outToServer = new ObjectOutputStream(skt.getOutputStream());
         inFromServer = new ObjectInputStream(skt.getInputStream());
         inFromStd = new Scanner(System.in);
-
-        //No clue how to pass the client over with the correct info
         Thread clientThread = new Thread(new ClientSideServerListener(new ClackClient()));
-
         while (!closeConnection)
         {
             readClientData();
@@ -108,7 +105,7 @@ public static void start() {
             if (closeConnection) {
                 break;
             }
-            clientThread.run();
+            clientThread.start();
         }
 
         inFromStd.close();
@@ -127,8 +124,7 @@ public static void readClientData()
         if (nextToken.equals("DONE"))
         {
             closeConnection = true;
-            dataToSendToServer = new MessageClackData(userName, nextToken, key,
-                    ClackData.CONSTANT_LOGOUT);
+            dataToSendToServer = new MessageClackData(userName, nextToken, key, ClackData.CONSTANT_LOGOUT);
         }
         else if (nextToken.equals("SENDFILE"))
         {
@@ -137,10 +133,8 @@ public static void readClientData()
             ((FileClackData) dataToSendToServer).readFileContents(key);
 
         }
-        else if (nextToken.equals("LISTUSERS"))
-        {
-            // Does nothing for now. Eventually, this will return a list of users.
-            // For Part 2, do not test LISTUSERS; otherwise, it may generate an error.
+        else if (nextToken.equals("LISTUSERS")) {
+            dataToSendToServer = new MessageClackData(userName, nextToken, key, ClackData.CONSTANT_LISTUSERS);
         }
         else
         {
@@ -148,8 +142,25 @@ public static void readClientData()
             dataToSendToServer = new MessageClackData(userName, message, key,
             ClackData.CONSTANT_SENDMESSAGE);
         }
-}
+}public void receiveData() {
+        try {
+            this.dataToReceiveFromServer = (ClackData) this.inFromServer.readObject();
+        } catch (ClassNotFoundException cnfe) {
+            System.err.println("ClassNotFoundException thrown in receiveData(): " + cnfe.getMessage());
 
+        } catch (InvalidClassException ice) {
+            System.err.println("InvalidClassException thrown in receiveData(): " + ice.getMessage());
+
+        } catch (StreamCorruptedException sce) {
+            System.err.println("StreamCorruptedException thrown in receiveData(): " + sce.getMessage());
+
+        } catch (OptionalDataException ode) {
+            System.err.println("OptionalDataException thrown in receiveData(): " + ode.getMessage());
+
+        } catch (IOException ioe) {
+            System.err.println("IOException thrown in receiveData(): " + ioe.getMessage());
+        }
+    }
 public static void sendData()
 {
     try
@@ -160,7 +171,14 @@ public static void sendData()
     {
         System.err.println("IO Exception occurred");
     }
-}
+}public void printData() {
+        if (this.dataToReceiveFromServer != null) {
+            System.out.println("From: " + this.dataToReceiveFromServer.getUsername());
+            System.out.println("Date: " + this.dataToReceiveFromServer.getDate());
+            System.out.println("Data: " + this.dataToReceiveFromServer.getData(key));
+            System.out.println();
+        }
+    }
 
 public String getUserName()
 {

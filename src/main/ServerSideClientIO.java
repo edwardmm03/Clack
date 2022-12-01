@@ -6,14 +6,13 @@ import java.io.*;
 import java.net.*;
 
 public class ServerSideClientIO implements Runnable {
-
     private boolean closeConnection = false;
-    ClackData dataToReceiveFromClient;
-    ClackData dataToSendToClient;
-    ObjectInputStream inFromClient;
-    ObjectOutputStream outToClient;
-    ClackServer server;
-    Socket clientSocket;
+    private ClackData dataToReceiveFromClient;
+    private ClackData dataToSendToClient;
+    private ObjectInputStream inFromClient;
+    private ObjectOutputStream outToClient;
+    private ClackServer server;
+    private Socket clientSocket;
 
     ServerSideClientIO(ClackServer server, Socket clientSocket) {
         this.server = server;
@@ -33,7 +32,8 @@ public class ServerSideClientIO implements Runnable {
             while (!closeConnection) {
                 receiveData();
                 if(closeConnection){break;}
-
+                setDataToSendToClient(dataToReceiveFromClient);
+                this.server.broadcast(dataToSendToClient);
             }
             clientSocket.close();
         } catch (IOException e) {
@@ -44,7 +44,11 @@ public class ServerSideClientIO implements Runnable {
         try {
             this.dataToReceiveFromClient = (ClackData) this.inFromClient.readObject();
             if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
+                server.remove(new ServerSideClientIO(server, clientSocket));
                 this.closeConnection = true;
+            }
+            if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){
+
             }
         } catch (ClassNotFoundException cnfe) {
             System.err.println("ClassNotFoundException thrown in receiveData(): " + cnfe.getMessage());
@@ -52,10 +56,8 @@ public class ServerSideClientIO implements Runnable {
             System.err.println("InvalidClassException thrown in receiveData(): " + ice.getMessage());
         } catch (StreamCorruptedException sce) {
             System.err.println("StreamCorruptedException thrown in receiveData(): " + sce.getMessage());
-
         } catch (OptionalDataException ode) {
             System.err.println("OptionalDataException thrown in receiveData(): " + ode.getMessage());
-
         } catch (IOException ioe) {
             System.err.println("IOException thrown in receiveData(): " + ioe.getMessage());
         }
