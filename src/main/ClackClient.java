@@ -112,7 +112,7 @@ public class ClackClient {
             Socket skt = new Socket(this.hostName, this.port);
             this.outToServer = new ObjectOutputStream(skt.getOutputStream());
             this.inFromServer = new ObjectInputStream(skt.getInputStream());
-            Thread clientThread = new Thread(new ClientSideServerListener(new ClackClient(this.userName,this.hostName,this.port)));
+            Thread clientThread = new Thread(new ClientSideServerListener(this));
             clientThread.start();
 
             while (!this.closeConnection) {
@@ -207,7 +207,6 @@ public class ClackClient {
     public void receiveData() {
         try {
             this.dataToReceiveFromServer = (ClackData) this.inFromServer.readObject();
-
         } catch (ClassNotFoundException cnfe) {
             System.err.println("ClassNotFoundException thrown in receiveData(): " + cnfe.getMessage());
 

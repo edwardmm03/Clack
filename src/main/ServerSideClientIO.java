@@ -1,6 +1,7 @@
 package main;
 
 import data.ClackData;
+import data.MessageClackData;
 
 import java.io.*;
 import java.net.*;
@@ -28,28 +29,28 @@ public class ServerSideClientIO implements Runnable {
     public void run() {
         try {
             System.out.println("Starting thread");
-            this.inFromClient = new ObjectInputStream(clientSocket.getInputStream());
-            this.outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-            while (!closeConnection) {
-                System.out.println("Loop");
+            this.inFromClient = new ObjectInputStream(this.clientSocket.getInputStream());
+            this.outToClient = new ObjectOutputStream(this.clientSocket.getOutputStream());
+            while (!this.closeConnection) {
                 receiveData();
-                if(closeConnection){break;}
-                setDataToSendToClient(dataToReceiveFromClient);
-                this.server.broadcast(dataToSendToClient);
+                if(this.closeConnection){break;}
+                this.server.broadcast(this.dataToReceiveFromClient);
             }
-            clientSocket.close();
+            this.clientSocket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public void receiveData() {
         try {
-            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
-                server.remove(new ServerSideClientIO(server, clientSocket));
-                closeConnection = true;
+            this.dataToReceiveFromClient = (ClackData) this.inFromClient.readObject();
+            if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
+                this.server.remove(new ServerSideClientIO(this.server, this.clientSocket));
+                this.closeConnection = true;
             }
-            //if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){}
+            if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){
+                dataToReceiveFromClient = new MessageClackData(dataToSendToClient.getUsername(), server.listUsers(),0);
+            }
         } catch (ClassNotFoundException cnfe) {
             System.err.println("ClassNotFoundException thrown in receiveData(): " + cnfe.getMessage());
         } catch (InvalidClassException ice) {
@@ -72,6 +73,7 @@ public class ServerSideClientIO implements Runnable {
             System.err.println("IOException thrown in sendData(): " + ioe.getMessage());
         }
     }
-    void setDataToSendToClient(ClackData dataToSendToClient){this.dataToSendToClient = dataToSendToClient;}
+    public String getUserName(){return this.dataToReceiveFromClient.getUsername();}
+    public void setDataToSendToClient(ClackData dataToSendToClient){this.dataToSendToClient = dataToSendToClient;}
 }
 
