@@ -107,16 +107,14 @@ public class ClackClient {
      * 3. Closes the scanner and all I/O related resources.
      */
     public void start() {
-        // See the following API docs for all exceptions caught:
-        // https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html#Socket(java.lang.String,%20int)
-        // https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html#ObjectInputStream(java.io.InputStream)
-        // https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html#ObjectOutputStream(java.io.OutputStream)
         try {
             this.inFromStd = new Scanner(System.in);
             Socket skt = new Socket(this.hostName, this.port);
             this.outToServer = new ObjectOutputStream(skt.getOutputStream());
             this.inFromServer = new ObjectInputStream(skt.getInputStream());
-            Thread clientThread = new Thread(new ClientSideServerListener(new ClackClient()));
+            Thread clientThread = new Thread(new ClientSideServerListener(new ClackClient(this.userName,this.hostName,this.port)));
+            clientThread.start();
+
             while (!this.closeConnection) {
                 readClientData();
                 sendData();
@@ -124,6 +122,7 @@ public class ClackClient {
                     break;
                 }
             }
+            //clientThread.start();
             this.inFromServer.close();
             this.outToServer.close();
             skt.close();
@@ -146,18 +145,7 @@ public class ClackClient {
         }
     }
 
-    /**
-     * Gets an input from the user through standard input, represented by this.inFromStd,
-     * and then initializes this.dataToSendToServer based on the following input:
-     * (a) DONE: Closes the connection,
-     * (b) SENDFILE filename: Initializes this.dataToSendToServer as FileClackData
-     * and attempts to read the given file,
-     * (c) LISTUSERS: Does nothing for now; eventually, will return a list of users,
-     * (d) Anything else: Initializes this.dataToSendToServer as MessageClackData,
-     * with the given input.
-     * this.dataToSendToServer should be encrypted using the default key.
-     * Does not return anything.
-     */
+
     public void readClientData() {
         String nextToken = this.inFromStd.next();
 
@@ -194,9 +182,8 @@ public class ClackClient {
      * Must catch all relevant exceptions separately and
      * print out messages to standard error for each exception.
      */
-    public void sendData() {
-        // See the following API docs for all exceptions caught:
-        // https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html#writeObject(java.lang.Object)
+    public void sendData()
+    {
         try {
             this.outToServer.writeObject(this.dataToSendToServer);
 
@@ -218,8 +205,6 @@ public class ClackClient {
      * print out messages to standard error for each exception.
      */
     public void receiveData() {
-        // See the following API docs for all exceptions caught:
-        // https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html#readObject()
         try {
             this.dataToReceiveFromServer = (ClackData) this.inFromServer.readObject();
 
