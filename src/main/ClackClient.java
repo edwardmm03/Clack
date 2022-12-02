@@ -248,7 +248,7 @@ public class ClackClient {
      */
     public void printData() {
         if (this.dataToReceiveFromServer != null) {
-            System.out.println("From: " + this.dataToReceiveFromServer.getUserName());
+            System.out.println("From: " + this.dataToReceiveFromServer.getUsername());
             System.out.println("Date: " + this.dataToReceiveFromServer.getDate());
             System.out.println("Data: " + this.dataToReceiveFromServer.getData(DEFAULT_KEY));
             System.out.println();
@@ -281,6 +281,8 @@ public class ClackClient {
     public int getPort() {
         return this.port;
     }
+
+    public boolean getCloseConnection() {return this.closeConnection;}
 
     @Override
     public int hashCode() {
