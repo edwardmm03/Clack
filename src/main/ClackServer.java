@@ -56,11 +56,14 @@ public class ClackServer {
         try {
             ServerSocket sskt = new ServerSocket(DEFAULT_PORT);
             ClackServer temp = new ClackServer();
+
             while(!closeConnection){
                 Socket cskt = sskt.accept();
                 ServerSideClientIO acceptedClient = new ServerSideClientIO(temp,cskt);
+                System.out.println("Created clientio");
                 serverSideClientIOList.add(acceptedClient);
                 Thread clientInstance= new Thread(acceptedClient);
+                System.out.println("Created Thread");
                 clientInstance.start();
             }
             sskt.close();
