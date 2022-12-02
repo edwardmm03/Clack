@@ -55,15 +55,11 @@ public class ClackServer {
     public static void start() {
         try {
             ServerSocket sskt = new ServerSocket(DEFAULT_PORT);
-            ClackServer temp = new ClackServer();
-
             while(!closeConnection){
                 Socket cskt = sskt.accept();
-                ServerSideClientIO acceptedClient = new ServerSideClientIO(temp,cskt);
-                System.out.println("Created clientio");
+                ServerSideClientIO acceptedClient = new ServerSideClientIO(this,cskt);
                 serverSideClientIOList.add(acceptedClient);
                 Thread clientInstance= new Thread(acceptedClient);
-                System.out.println("Created Thread");
                 clientInstance.start();
             }
             sskt.close();
@@ -71,10 +67,8 @@ public class ClackServer {
         catch (IOException ioe) {System.err.print("IO Exception Occurred");}
     }
     public synchronized void broadcast(ClackData dataToBroadcastToClients){
-        Iterator<ServerSideClientIO>it = serverSideClientIOList.iterator();
-        ServerSideClientIO temp;
-        while(it.hasNext()){
-            temp = it.next();
+        for(Iterator<ServerSideClientIO> it = serverSideClientIOList.iterator(); it.hasNext();){
+            ServerSideClientIO temp = it.next();
             temp.setDataToSendToClient(dataToBroadcastToClients);
             temp.sendData();
         }
@@ -89,6 +83,14 @@ public class ClackServer {
      */
     public int getPort() {
         return this.port;
+    }
+    public String listUsers(){
+        String users = null;
+        for(Iterator<ServerSideClientIO> it = serverSideClientIOList.iterator(); it.hasNext();){
+            ServerSideClientIO temp = it.next();
+            users += temp.getUserName();
+        }
+        return users;
     }
 
 
