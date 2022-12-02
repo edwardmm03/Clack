@@ -27,9 +27,11 @@ public class ServerSideClientIO implements Runnable {
     @Override
     public void run() {
         try {
+            System.out.println("Starting thread");
             this.inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             this.outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
             while (!closeConnection) {
+                System.out.println("Loop");
                 receiveData();
                 if(closeConnection){break;}
                 setDataToSendToClient(dataToReceiveFromClient);
@@ -42,14 +44,12 @@ public class ServerSideClientIO implements Runnable {
     }
     public void receiveData() {
         try {
-            this.dataToReceiveFromClient = (ClackData) this.inFromClient.readObject();
-            if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
+            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
                 server.remove(new ServerSideClientIO(server, clientSocket));
-                this.closeConnection = true;
+                closeConnection = true;
             }
-            if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){
-
-            }
+            //if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){}
         } catch (ClassNotFoundException cnfe) {
             System.err.println("ClassNotFoundException thrown in receiveData(): " + cnfe.getMessage());
         } catch (InvalidClassException ice) {
@@ -63,7 +63,7 @@ public class ServerSideClientIO implements Runnable {
         }
     }
     public void sendData() {
-        try {this.outToClient.writeObject(this.dataToSendToClient);}
+        try {outToClient.writeObject(dataToSendToClient);}
         catch (InvalidClassException ice) {
             System.err.println("InvalidClassException thrown in sendData(): " + ice.getMessage());
         } catch (NotSerializableException nse) {
