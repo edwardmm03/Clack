@@ -6,14 +6,12 @@ public class MessageClackData extends ClackData
 {
     //private variables
     private String message;
-
     //Constructor for username, message, and type
     public MessageClackData(String u, String m, int t)
     {
         super(u,t);
         message = m;
     }
-
     //Default Constructor
     public MessageClackData()
     {
