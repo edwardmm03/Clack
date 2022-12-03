@@ -48,6 +48,7 @@ public class MessageClackData extends ClackData
             return false;
         }
     }
+    public void resetMessage(String nMessage){this.message = nMessage;}
 
     //returns a string describing the object
     public String toString()

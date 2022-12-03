@@ -90,6 +90,7 @@ public class ClackServer {
             ServerSideClientIO temp = it.next();
             users += temp.dataToReceiveFromClient.getUsername();
         }
+        System.out.println(users);
         return users;
     }
 
