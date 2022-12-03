@@ -8,8 +8,8 @@ import java.util.*;
 public class ClackServer {
     private static final int DEFAULT_PORT = 7000;  // The default port number
     private int port;  // An integer representing the port number on the server connected to
-    private static boolean closeConnection;  // A boolean representing whether the connection is closed or not
-    public static ArrayList<ServerSideClientIO> serverSideClientIOList; //ArrayList of ServerSideIO Objects
+    private boolean closeConnection;  // A boolean representing whether the connection is closed or not
+    private ArrayList<ServerSideClientIO> serverSideClientIOList; //ArrayList of ServerSideIO Objects
     /**
      * The constructor that sets the port number.
      * Sets dataToReceiveFromClient and dataToSendToClient as null.
@@ -22,7 +22,7 @@ public class ClackServer {
         }
         this.port = port;
         this.closeConnection = false;
-        serverSideClientIOList = new ArrayList<ServerSideClientIO>();
+        this.serverSideClientIOList = new ArrayList<ServerSideClientIO>();
     }
     /**
      * The default constructor that sets the port to the default port number 7000.
@@ -32,7 +32,7 @@ public class ClackServer {
     public ClackServer() throws IllegalArgumentException {
         this(DEFAULT_PORT);
     }
-    public static void main(String[] args){
+    public void main(String[] args){
         ClackServer runner;
         if (args.length == 0) {runner = new ClackServer();}
         else {
@@ -52,10 +52,10 @@ public class ClackServer {
      * Creates a server socket and a client socket to facilitate input and output
      * runs a loop to echo data until closeConnection is set to true
      */
-    public static void start() {
+    public void start() {
         try {
             ServerSocket sskt = new ServerSocket(DEFAULT_PORT);
-            while(!closeConnection){
+            while(!this.closeConnection){
                 Socket cskt = sskt.accept();
                 ServerSideClientIO acceptedClient = new ServerSideClientIO(this,cskt);
                 serverSideClientIOList.add(acceptedClient);
@@ -85,10 +85,10 @@ public class ClackServer {
         return this.port;
     }
     public String listUsers(){
-        String users = null;
+        String users = "List of Users: ";
         for(Iterator<ServerSideClientIO> it = serverSideClientIOList.iterator(); it.hasNext();){
             ServerSideClientIO temp = it.next();
-            users += temp.getUserName();
+            users += temp.dataToReceiveFromClient.getUsername();
         }
         return users;
     }

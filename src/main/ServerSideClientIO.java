@@ -8,7 +8,7 @@ import java.net.*;
 
 public class ServerSideClientIO implements Runnable {
     private boolean closeConnection = false;
-    private ClackData dataToReceiveFromClient;
+    public ClackData dataToReceiveFromClient;
     private ClackData dataToSendToClient;
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
@@ -49,7 +49,7 @@ public class ServerSideClientIO implements Runnable {
                 this.closeConnection = true;
             }
             if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){
-                dataToReceiveFromClient = new MessageClackData(dataToSendToClient.getUsername(), server.listUsers(),0);
+                dataToReceiveFromClient = new MessageClackData(dataToReceiveFromClient.getUsername(), server.listUsers(),0);
             }
         } catch (ClassNotFoundException cnfe) {
             System.err.println("ClassNotFoundException thrown in receiveData(): " + cnfe.getMessage());
@@ -73,7 +73,6 @@ public class ServerSideClientIO implements Runnable {
             System.err.println("IOException thrown in sendData(): " + ioe.getMessage());
         }
     }
-    public String getUserName(){return this.dataToReceiveFromClient.getUsername();}
     public void setDataToSendToClient(ClackData dataToSendToClient){this.dataToSendToClient = dataToSendToClient;}
 }
 
