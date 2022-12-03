@@ -73,7 +73,6 @@ public class ServerSideClientIO implements Runnable {
             System.err.println("IOException thrown in sendData(): " + ioe.getMessage());
         }
     }
-    public String getUserName(){return this.dataToReceiveFromClient.getUsername();}
     public void setDataToSendToClient(ClackData dataToSendToClient){this.dataToSendToClient = dataToSendToClient;}
 }
 
