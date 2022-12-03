@@ -35,6 +35,8 @@ public class ServerSideClientIO implements Runnable {
                 if(this.closeConnection){break;}
                 this.server.broadcast(this.dataToReceiveFromClient);
             }
+            this.inFromClient.close();
+            this.outToClient.close();
             this.clientSocket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -44,8 +46,8 @@ public class ServerSideClientIO implements Runnable {
         try {
             this.dataToReceiveFromClient = (ClackData) this.inFromClient.readObject();
             if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
-                this.server.remove(new ServerSideClientIO(this.server, this.clientSocket));
                 this.closeConnection = true;
+                this.server.remove(this);
             }
             else if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){
                 this.dataToReceiveFromClient =
