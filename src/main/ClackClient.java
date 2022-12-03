@@ -166,9 +166,7 @@ public class ClackClient {
             }
 
         } else if (nextToken.equals("LISTUSERS")) {
-            // Does nothing for now. Eventually, this will return a list of users.
-            // For Part 2, do not test LISTUSERS; otherwise, it may generate an error.
-
+            this.dataToSendToServer = new MessageClackData(this.userName, null, ClackData.CONSTANT_LISTUSERS);
         } else {
             String message = nextToken + this.inFromStd.nextLine();
             this.dataToSendToServer = new MessageClackData(this.userName, message, DEFAULT_KEY,

@@ -32,7 +32,7 @@ public class ClackServer {
     public ClackServer() throws IllegalArgumentException {
         this(DEFAULT_PORT);
     }
-    public void main(String[] args){
+    public static void main(String[] args){
         ClackServer runner;
         if (args.length == 0) {runner = new ClackServer();}
         else {

@@ -28,7 +28,6 @@ public class ServerSideClientIO implements Runnable {
     @Override
     public void run() {
         try {
-            System.out.println("Starting thread");
             this.inFromClient = new ObjectInputStream(this.clientSocket.getInputStream());
             this.outToClient = new ObjectOutputStream(this.clientSocket.getOutputStream());
             while (!this.closeConnection) {
