@@ -114,7 +114,6 @@ public class ClackClient {
             this.inFromServer = new ObjectInputStream(skt.getInputStream());
             Thread clientThread = new Thread(new ClientSideServerListener(this));
             clientThread.start();
-
             while (!this.closeConnection) {
                 readClientData();
                 sendData();
@@ -122,7 +121,6 @@ public class ClackClient {
                     break;
                 }
             }
-            //clientThread.start();
             this.inFromServer.close();
             this.outToServer.close();
             skt.close();
@@ -164,13 +162,11 @@ public class ClackClient {
                 System.err.println("IOException occurs when reading a file: " + ioe.getMessage());
                 this.dataToSendToServer = null;
             }
-
         } else if (nextToken.equals("LISTUSERS")) {
-            this.dataToSendToServer = new MessageClackData(this.userName, null, ClackData.CONSTANT_LISTUSERS);
+            this.dataToSendToServer = new MessageClackData(this.userName,null, DEFAULT_KEY, ClackData.CONSTANT_LISTUSERS);
         } else {
             String message = nextToken + this.inFromStd.nextLine();
-            this.dataToSendToServer = new MessageClackData(this.userName, message, DEFAULT_KEY,
-                    ClackData.CONSTANT_SENDMESSAGE);
+            this.dataToSendToServer = new MessageClackData(this.userName, message, DEFAULT_KEY, ClackData.CONSTANT_SENDMESSAGE);
         }
     }
 
@@ -184,13 +180,10 @@ public class ClackClient {
     {
         try {
             this.outToServer.writeObject(this.dataToSendToServer);
-
         } catch (InvalidClassException ice) {
             System.err.println("InvalidClassException thrown in sendData(): " + ice.getMessage());
-
         } catch (NotSerializableException nse) {
             System.err.println("NotSerializableException thrown in sendData(): " + nse.getMessage());
-
         } catch (IOException ioe) {
             System.err.println("IOException thrown in sendData(): " + ioe.getMessage());
         }
@@ -232,7 +225,9 @@ public class ClackClient {
         if (this.dataToReceiveFromServer != null) {
             System.out.println("From: " + this.dataToReceiveFromServer.getUsername());
             System.out.println("Date: " + this.dataToReceiveFromServer.getDate());
-            System.out.println("Data: " + this.dataToReceiveFromServer.getData(DEFAULT_KEY));
+            if (this.dataToReceiveFromServer.getType() != this.dataToReceiveFromServer.CONSTANT_LISTUSERS){
+                System.out.println("Data: " + this.dataToReceiveFromServer.getData(DEFAULT_KEY));}
+            else {System.out.println("List of Users: " + this.dataToReceiveFromServer.getData());}
             System.out.println();
         }
     }

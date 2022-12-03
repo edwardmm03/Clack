@@ -47,8 +47,9 @@ public class ServerSideClientIO implements Runnable {
                 this.server.remove(new ServerSideClientIO(this.server, this.clientSocket));
                 this.closeConnection = true;
             }
-            if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){
-                dataToReceiveFromClient = new MessageClackData(dataToReceiveFromClient.getUsername(), server.listUsers(),0);
+            else if (this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){
+                this.dataToReceiveFromClient =
+                        new MessageClackData(this.dataToReceiveFromClient.getUsername(), this.server.listUsers(), 0);
             }
         } catch (ClassNotFoundException cnfe) {
             System.err.println("ClassNotFoundException thrown in receiveData(): " + cnfe.getMessage());
