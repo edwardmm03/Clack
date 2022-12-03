@@ -116,10 +116,10 @@ public class ClackClient {
             clientThread.start();
             while (!this.closeConnection) {
                 readClientData();
-                sendData();
                 if (this.closeConnection) {
                     break;
                 }
+                sendData();
             }
             this.inFromServer.close();
             this.outToServer.close();
@@ -146,16 +146,13 @@ public class ClackClient {
 
     public void readClientData() {
         String nextToken = this.inFromStd.next();
-
         if (nextToken.equals("DONE")) {
             this.closeConnection = true;
             this.dataToSendToServer = new MessageClackData(this.userName, nextToken, DEFAULT_KEY,
                     ClackData.CONSTANT_LOGOUT);
-
         } else if (nextToken.equals("SENDFILE")) {
             String filename = this.inFromStd.next();
             this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
-
             try {
                 ((FileClackData) this.dataToSendToServer).readFileContents(DEFAULT_KEY);
             } catch (Exception ioe) {

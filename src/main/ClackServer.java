@@ -85,12 +85,11 @@ public class ClackServer {
         return this.port;
     }
     public String listUsers(){
-        String users = "List of Users: ";
+        String users = "";
         for(Iterator<ServerSideClientIO> it = serverSideClientIOList.iterator(); it.hasNext();){
             ServerSideClientIO temp = it.next();
             users += temp.dataToReceiveFromClient.getUsername();
         }
-        System.out.println(users);
         return users;
     }
 
